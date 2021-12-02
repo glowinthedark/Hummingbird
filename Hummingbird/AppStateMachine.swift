@@ -44,14 +44,14 @@ class AppStateMachine {
 
 extension AppStateMachine {
     func toggleEnabled() {
-        switch state {
-            case .activated:
-                deactivate()
-            case .deactivated:
-                checkLicense()
-            default:
-                break
-        }
+//        switch state {
+//            case .activated:
+//                // deactivate()
+//            case .deactivated:
+//                checkLicense()
+//            default:
+//                break
+//        }
     }
 }
 
@@ -141,38 +141,41 @@ extension AppStateMachine {
     func checkLicense() {
         // Yes, it is really that simple to circumvent the license check. But if you can build it from source
         // it's free of charge anyway. Although it'd be great if you'd send a coffee!
-        if Current.featureFlags.commercial {
-            log(.debug, "Commercial version")
-            let firstLaunched = Date(forKey: .firstLaunched, defaults: Current.defaults()) ?? Current.date()
-            let license = License(forKey: .license, defaults: Current.defaults())
-            let licenseInfo = LicenseInfo(firstLaunched: firstLaunched, license: license)
-            validate(licenseInfo) { status in
-                switch status {
-                    case .validLicenseKey:
-                        log(.debug, "OK: valid license")
-                        self.stateMachine.state = .activating
-                    case .inTrial:
-                        log(.debug, "OK: in trial")
-                        self.stateMachine.state = .activating
-                    case .noLicenseKey:
-                        log(.debug, "⚠️ no license")
-                        self.stateMachine.state = .unregistered
-                    case .invalidLicenseKey:
-                        log(.debug, "⚠️ invalid license")
-                        self.stateMachine.state = .unregistered
-                    case .error(let error):
-                        // TODO: allow a number of errors but eventually lock (to prevent someone from blocking the network calls)
-                        log(.debug, "⚠️ \(error)")
-                        // We're graceful here to avoid nagging folks with a license who are offline.
-                        // Yes, you can block the app from connecting but if you can figure that out you can probably also build
-                        // and run the free app. Please support indie software :)
-                        self.stateMachine.state = .activating
-                }
-            }
-        } else {
-            log(.debug, "Open source version")
-            stateMachine.state = .activating
-        }
+        log(.debug, "OK: valid license")
+        self.stateMachine.state = .activating
+        
+//        if Current.featureFlags.commercial {
+//            log(.debug, "Commercial version")
+//            let firstLaunched = Date(forKey: .firstLaunched, defaults: Current.defaults()) ?? Current.date()
+//            let license = License(forKey: .license, defaults: Current.defaults())
+//            let licenseInfo = LicenseInfo(firstLaunched: firstLaunched, license: license)
+//            validate(licenseInfo) { status in
+//                switch status {
+//                    case .validLicenseKey:
+//                        log(.debug, "OK: valid license")
+//                        self.stateMachine.state = .activating
+//                    case .inTrial:
+//                        log(.debug, "OK: in trial")
+//                        self.stateMachine.state = .activating
+//                    case .noLicenseKey:
+//                        log(.debug, "⚠️ no license")
+//                        self.stateMachine.state = .unregistered
+//                    case .invalidLicenseKey:
+//                        log(.debug, "⚠️ invalid license")
+//                        self.stateMachine.state = .unregistered
+//                    case .error(let error):
+//                        // TODO: allow a number of errors but eventually lock (to prevent someone from blocking the network calls)
+//                        log(.debug, "⚠️ \(error)")
+//                        // We're graceful here to avoid nagging folks with a license who are offline.
+//                        // Yes, you can block the app from connecting but if you can figure that out you can probably also build
+//                        // and run the free app. Please support indie software :)
+//                        self.stateMachine.state = .activating
+//                }
+//            }
+//        } else {
+//            log(.debug, "Open source version")
+//            stateMachine.state = .activating
+//        }
     }
 
     func activate(showAlert: Bool, keepTrying: Bool) {

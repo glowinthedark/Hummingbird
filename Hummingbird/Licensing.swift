@@ -96,23 +96,27 @@ public struct Gumroad {
 
 
 func validate(_ licenseInfo: LicenseInfo, completion: @escaping (Status) -> ()) {
-    if let licenseKey = licenseInfo.license {
-        Current.gumroad.validate(license: licenseKey) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let valid):
-                    completion(valid ? .validLicenseKey: .invalidLicenseKey)
-                case .failure(let error):
-                    completion(.error(error))
-                }
-            }
-        }
-    } else {
-        if licenseInfo.inTrialPeriod {
-            completion(.inTrial)
-        } else {
-            completion(.noLicenseKey)
-        }
-    }
+    completion(.validLicenseKey)
+
+//    if let licenseKey = licenseInfo.license {
+        
+            
+//        Current.gumroad.validate(license: licenseKey) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success():
+//                    completion(.validLicenseKey)
+//                case .failure(let error):
+//                    completion(.error(error))
+//                }
+//            }
+//        }
+//    } else {
+//        if licenseInfo.inTrialPeriod {
+//            completion(.inTrial)
+//        } else {
+//            completion(.noLicenseKey)
+//        }
+//    }
 }
 
