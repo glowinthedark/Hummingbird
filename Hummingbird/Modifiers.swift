@@ -5,7 +5,7 @@
 //  Created by Sven A. Schmidt on 03/05/2019.
 //  Copyright © 2019 finestructure. All rights reserved.
 //
-
+import Cocoa
 import Foundation
 
 
